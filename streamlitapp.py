@@ -32,7 +32,7 @@ st.markdown(
 @st.cache_resource
 def load_data():
     # Load your data here (adjust path as needed)
-    dfs = pd.read_excel('Pizza_Sale_Cleaned.xlsx')
+    dfs = pd.read_excel('data/Pizza_Sale_Cleaned.xlsx')
     dfs['order_date'] = pd.to_datetime(dfs['order_date'])
     df_agg = dfs.groupby(['order_date', 'pizza_name_id']).agg({'quantity': 'sum', }).reset_index()
     df_agg['order_date'] = pd.to_datetime(df_agg['order_date'], format='%Y-%m-%d')
@@ -52,7 +52,7 @@ def load_data():
 @st.cache_resource
 def load_lstm_model():
     # Load the pre-trained LSTM model
-    loaded_model = load_model("lstm_pizza_model.keras")
+    loaded_model = load_model("models/lstm_pizza_model.keras")
     return loaded_model
 
 # Initialize Streamlit app
@@ -111,9 +111,9 @@ if st.button('Predict 🚀'):
         next_1_day = max_date + pd.Timedelta(days=1)
         next_n_days = max_date + pd.Timedelta(days=days_to_forecast)
         st.success(f"Data predicted for **{next_1_day.strftime('%Y-%m-%d')}** to **{next_n_days.strftime('%Y-%m-%d')}**")
-        df_ing = pd.read_excel('Pizza_ingredients_cleaned.xlsx')
-        file_name_pizza_order = f"pizza_order_forecast_{next_1_day.strftime('%b%d')}_to_{next_n_days.strftime('%b%d')}.xlsx"
-        file_name_pizza_quantities = f"pizza_quantities_{next_1_day.strftime('%b%d')}_to_{next_n_days.strftime('%b%d')}.xlsx"
+        df_ing = pd.read_excel('data/Pizza_ingredients_cleaned.xlsx')
+        file_name_pizza_order = f"data/pizza_order_forecast_{next_1_day.strftime('%b%d')}_to_{next_n_days.strftime('%b%d')}.xlsx"
+        file_name_pizza_quantities = f"data/pizza_quantities_{next_1_day.strftime('%b%d')}_to_{next_n_days.strftime('%b%d')}.xlsx"
 
         # Calculating quantity amount in grams of each ingredient per day
         num_rows = len(df_forecasted)
@@ -189,7 +189,7 @@ if st.button('Predict 🚀'):
                 # Write the DataFrame to a sheet in the Excel file
                 df_order.to_excel(writer, sheet_name=f'Day_{day + 1}', index=False)
 
-        st.write(f"File saved as: {file_name_pizza_order}")
+        st.write(f"File saved as: **{file_name_pizza_order}**📥")
 
         with pd.ExcelWriter(file_name_pizza_quantities, engine='openpyxl') as writer:
             # Iterate through each unique day
@@ -200,5 +200,5 @@ if st.button('Predict 🚀'):
                 # Write the DataFrame to a new sheet in the Excel file
                 df_day[['pizza_ingredients', 'total_qty']].to_excel(writer, sheet_name=f'Day_{day}', index=False)
 
-        st.write(f"File saved as: {file_name_pizza_quantities}")
+        st.write(f"File saved as: **{file_name_pizza_quantities}** 📥")
 
