@@ -112,8 +112,8 @@ if st.button('Predict 🚀'):
         next_n_days = max_date + pd.Timedelta(days=days_to_forecast)
         st.success(f"Data predicted for **{next_1_day.strftime('%Y-%m-%d')}** to **{next_n_days.strftime('%Y-%m-%d')}**")
         df_ing = pd.read_excel('data/Pizza_ingredients_cleaned.xlsx')
-        file_name_pizza_order = f"data/pizza_order_forecast_{next_1_day.strftime('%b%d')}_to_{next_n_days.strftime('%b%d')}.xlsx"
-        file_name_pizza_quantities = f"data/pizza_quantities_{next_1_day.strftime('%b%d')}_to_{next_n_days.strftime('%b%d')}.xlsx"
+        file_name_pizza_order = f"output/pizza_order_forecast_{next_1_day.strftime('%b%d')}_to_{next_n_days.strftime('%b%d')}.xlsx"
+        file_name_pizza_quantities = f"output/pizza_quantities_{next_1_day.strftime('%b%d')}_to_{next_n_days.strftime('%b%d')}.xlsx"
 
         # Calculating quantity amount in grams of each ingredient per day
         num_rows = len(df_forecasted)
